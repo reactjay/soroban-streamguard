@@ -1,0 +1,21 @@
+{
+  "name": "@streamguard/sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for StreamGuard: Zero-Knowledge Streaming Payroll & Stealth Escrow on Stellar",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@stellar/stellar-sdk": "^13.0.0",
+    "crypto-js": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.1"
+  }
+}

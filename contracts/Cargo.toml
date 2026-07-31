@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "stream-vault",
+]
+resolver = "2"
