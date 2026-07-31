@@ -9,14 +9,6 @@
 
 ---
 
-## 💡 Elevator Pitch
-
-Traditional streaming payroll protocols (e.g., Sablier, Superfluid) log all stream recipients, balances, and real-time streaming rates directly to transparent public ledgers. For Web3 organizations, global DAOs, and stealth engineering teams, this creates severe privacy vulnerabilities: public contributor salary leakage, real-time balance tracking, and corporate runway exposure.
-
-**Soroban StreamGuard** solves this by introducing a **Zero-Knowledge (ZK) Programmable Streaming Payroll Primitive** built natively on Stellar's Soroban smart contract platform. It decouples recipient identities from streaming liquidity pools using Pedersen commitments and nullifiers, while enabling **Milestone Proof-of-Work Rate Acceleration** and seamless fiat off-ramping via **Stellar SEP-24 Anchor integration**.
-
----
-
 ## ⚡ Why Stellar + Soroban?
 
 Building a privacy-preserving streaming engine requires predictable transaction execution, ultra-low fee overhead, and fast ledger finality. Stellar and Soroban provide the ideal foundation:
