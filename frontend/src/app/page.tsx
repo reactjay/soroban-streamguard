@@ -8,11 +8,26 @@ import { StealthPoolVisualizer } from '@/components/StealthPoolVisualizer';
 import { ZkInspector } from '@/components/ZkInspector';
 import { Sep24Modal } from '@/components/Sep24Modal';
 import { WorkProofModal } from '@/components/WorkProofModal';
+import { ProtocolStage } from '@/components/SystemFlowStrip';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'recipient' | 'employer' | 'stealth' | 'inspector'>('recipient');
   const [isSep24Open, setIsSep24Open] = useState(false);
   const [isWorkProofOpen, setIsWorkProofOpen] = useState(false);
+
+  // Dynamic Protocol Stage State for System Flow Strip
+  const [protocolStage, setProtocolStage] = useState<ProtocolStage>('created');
+  const [rateMultiplier, setRateMultiplier] = useState(1.0);
+
+  const handleProofVerified = () => {
+    setProtocolStage('unlocked');
+    setRateMultiplier(1.5);
+  };
+
+  const handleSep24Withdraw = () => {
+    setIsSep24Open(true);
+    setProtocolStage('withdrawn');
+  };
 
   return (
     <div className="min-h-screen bg-[#0B0E14] text-slate-100 flex flex-col font-sans selection:bg-purple-600 selection:text-white">
@@ -20,15 +35,18 @@ export default function Home() {
       <Header
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        onOpenSep24={() => setIsSep24Open(true)}
+        onOpenSep24={handleSep24Withdraw}
       />
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-6 py-8 space-y-8">
         {activeTab === 'recipient' && (
           <RecipientDashboard
-            onOpenSep24={() => setIsSep24Open(true)}
+            onOpenSep24={handleSep24Withdraw}
             onOpenWorkProof={() => setIsWorkProofOpen(true)}
+            currentStage={protocolStage}
+            setProtocolStage={setProtocolStage}
+            rateMultiplier={rateMultiplier}
           />
         )}
 
@@ -57,7 +75,11 @@ export default function Home() {
 
       {/* Interactive Modals */}
       <Sep24Modal isOpen={isSep24Open} onClose={() => setIsSep24Open(false)} />
-      <WorkProofModal isOpen={isWorkProofOpen} onClose={() => setIsWorkProofOpen(false)} />
+      <WorkProofModal
+        isOpen={isWorkProofOpen}
+        onClose={() => setIsWorkProofOpen(false)}
+        onProofVerified={handleProofVerified}
+      />
     </div>
   );
 }

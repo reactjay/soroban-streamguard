@@ -1,15 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Zap, CheckCircle2, Sparkles, Code, GitCommit, FileCheck } from 'lucide-react';
+import { X, Zap, CheckCircle2, Sparkles, Code, GitCommit, FileCheck, Loader2 } from 'lucide-react';
 import CryptoJS from 'crypto-js';
 
 interface WorkProofModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onProofVerified?: () => void;
 }
 
-export const WorkProofModal: React.FC<WorkProofModalProps> = ({ isOpen, onClose }) => {
+export const WorkProofModal: React.FC<WorkProofModalProps> = ({ isOpen, onClose, onProofVerified }) => {
   const [proofType, setProofType] = useState<'git_commit' | 'oracle_attestation' | 'api_payload'>('git_commit');
   const [milestoneId, setMilestoneId] = useState('2');
   const [payloadText, setPayloadText] = useState('git:commit:8f9a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a');
@@ -37,7 +38,10 @@ export const WorkProofModal: React.FC<WorkProofModalProps> = ({ isOpen, onClose 
 
       setIsSubmitting(false);
       setIsSuccess(true);
-    }, 600);
+      if (onProofVerified) {
+        onProofVerified();
+      }
+    }, 1200);
   };
 
   return (
@@ -58,7 +62,7 @@ export const WorkProofModal: React.FC<WorkProofModalProps> = ({ isOpen, onClose 
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-white">Submit ZK Work Proof</h2>
+              <h2 className="text-lg font-bold text-white">Verify Work → Unlock Value</h2>
               <span className="text-[10px] bg-purple-950 text-purple-300 border border-purple-800 px-2 py-0.5 rounded-full font-mono">
                 1.5x Speed Boost
               </span>
@@ -79,9 +83,9 @@ export const WorkProofModal: React.FC<WorkProofModalProps> = ({ isOpen, onClose 
                     setProofType('git_commit');
                     setPayloadText('git:commit:8f9a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a');
                   }}
-                  className={`p-2.5 rounded-xl border text-center text-xs font-medium flex flex-col items-center gap-1.5 ${
+                  className={`p-2.5 rounded-xl border text-center text-xs font-medium flex flex-col items-center gap-1.5 transition-all ${
                     proofType === 'git_commit'
-                      ? 'bg-purple-950 border-purple-600 text-white'
+                      ? 'bg-purple-950 border-purple-600 text-white glow-purple'
                       : 'bg-slate-900 border-slate-800 text-slate-400'
                   }`}
                 >
@@ -95,9 +99,9 @@ export const WorkProofModal: React.FC<WorkProofModalProps> = ({ isOpen, onClose 
                     setProofType('oracle_attestation');
                     setPayloadText('oracle:attest:security_audit_passed_v1');
                   }}
-                  className={`p-2.5 rounded-xl border text-center text-xs font-medium flex flex-col items-center gap-1.5 ${
+                  className={`p-2.5 rounded-xl border text-center text-xs font-medium flex flex-col items-center gap-1.5 transition-all ${
                     proofType === 'oracle_attestation'
-                      ? 'bg-purple-950 border-purple-600 text-white'
+                      ? 'bg-purple-950 border-purple-600 text-white glow-purple'
                       : 'bg-slate-900 border-slate-800 text-slate-400'
                   }`}
                 >
@@ -111,9 +115,9 @@ export const WorkProofModal: React.FC<WorkProofModalProps> = ({ isOpen, onClose 
                     setProofType('api_payload');
                     setPayloadText('api:task_completed_task_id_8941');
                   }}
-                  className={`p-2.5 rounded-xl border text-center text-xs font-medium flex flex-col items-center gap-1.5 ${
+                  className={`p-2.5 rounded-xl border text-center text-xs font-medium flex flex-col items-center gap-1.5 transition-all ${
                     proofType === 'api_payload'
-                      ? 'bg-purple-950 border-purple-600 text-white'
+                      ? 'bg-purple-950 border-purple-600 text-white glow-purple'
                       : 'bg-slate-900 border-slate-800 text-slate-400'
                   }`}
                 >
@@ -148,20 +152,32 @@ export const WorkProofModal: React.FC<WorkProofModalProps> = ({ isOpen, onClose 
               disabled={isSubmitting}
               className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs shadow-lg shadow-purple-950/50 flex items-center justify-center gap-2 transition-all"
             >
-              <Sparkles className="w-4 h-4 text-cyan-300" />
-              <span>{isSubmitting ? 'Verifying ZK Proof...' : 'Verify Proof & Accelerate Stream'}</span>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 text-cyan-300 animate-spin" />
+                  <span>Verifying Proof...</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4 text-cyan-300" />
+                  <span>Verify Work → Unlock Value</span>
+                </>
+              )}
             </button>
           </form>
         ) : (
-          <div className="space-y-4 text-center py-4">
-            <div className="w-12 h-12 rounded-2xl bg-purple-950 text-cyan-400 flex items-center justify-center mx-auto border border-purple-800 glow-purple">
-              <CheckCircle2 className="w-7 h-7" />
+          <div className="space-y-4 text-center py-4 animate-reward-flash rounded-2xl p-4">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-950 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-700 glow-emerald">
+              <CheckCircle2 className="w-7 h-7 animate-bounce" />
             </div>
 
             <div>
-              <h3 className="text-base font-bold text-white">Work Proof Verified On-Chain!</h3>
-              <p className="text-xs text-amber-400 font-semibold mt-1">
-                Stream speed accelerated to 1.5x (150% Streaming Payout Rate)
+              <span className="inline-block px-3 py-1 bg-emerald-950 text-emerald-300 border border-emerald-700 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+                Proof Verified
+              </span>
+              <h3 className="text-lg font-bold text-white">Work Proof Cryptographically Verified!</h3>
+              <p className="text-xs text-amber-300 font-semibold mt-1">
+                Stream Multiplier Boost Activated: 1.0x → 1.5x Speed Boost
               </p>
             </div>
 
@@ -183,9 +199,9 @@ export const WorkProofModal: React.FC<WorkProofModalProps> = ({ isOpen, onClose 
                 setIsSuccess(false);
                 onClose();
               }}
-              className="w-full py-3 px-6 rounded-xl bg-slate-900 border border-slate-800 text-white font-semibold text-xs"
+              className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 text-white font-bold text-xs shadow-md"
             >
-              Done
+              Return to Streaming Dashboard
             </button>
           </div>
         )}

@@ -86,10 +86,10 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onOpenS
         <div className="flex items-center gap-3">
           <button
             onClick={onOpenSep24}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white text-xs font-semibold shadow-lg shadow-emerald-900/30 transition-all transform hover:-translate-y-0.5"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-xs shadow-lg shadow-emerald-900/30 transition-all transform hover:-translate-y-0.5"
           >
             <ExternalLink className="w-3.5 h-3.5" />
-            <span>SEP-24 Anchor Off-Ramp</span>
+            <span>Exit to Fiat (SEP-24)</span>
           </button>
         </div>
       </div>
